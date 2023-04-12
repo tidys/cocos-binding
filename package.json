@@ -1,0 +1,75 @@
+{
+  "name": "cocos-binding",
+  "displayName": "cocos-binding",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.77.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "",
+      "properties": {
+        "cocos-binding.ini_path": {
+          "type": "string",
+          "default": "",
+          "description": "ini文件夹"
+        },
+        "cocos-binding.engine_path": {
+          "type": "string",
+          "default": "",
+          "description": "engine文件夹"
+        },
+        "cocos-binding.out_directory": {
+          "type": "string",
+          "default": "",
+          "description": "输出文件夹"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "cocos-binding.bind",
+        "title": "bind"
+      },
+      {
+        "command": "cocos-binding.setIniPath",
+        "title": "set-ini-path"
+      },
+      {
+        "command": "cocos-binding.setEnginePath",
+        "title": "set-engine-path"
+      },
+      {
+        "command": "lua-bind.setOutDir",
+        "title": "set-out-dir"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.77.0",
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "typescript": "^4.9.3",
+    "@vscode/test-electron": "^2.2.0"
+  }
+}
