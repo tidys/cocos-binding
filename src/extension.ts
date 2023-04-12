@@ -193,34 +193,18 @@ async function chooseIni() {
 function runBinding(iniFile: string) {
 	const exePath = fileTools.getGeneratorExecutable();
 	if (existsSync(exePath)) {
-		const len = extname(iniFile).length;
-		const ba = basename(iniFile);
-		const a = ba.slice(0, -len);
-		const section = a;
+		const extLen = extname(iniFile).length;
+		const filename = basename(iniFile).slice(0, -extLen);
+		const section = filename;
 		const outDir = getOutDirectory();
-		const outFile = `lua_${a}_auto`;
+		const outFile = `lua_${filename}_auto`;
 		const args: string[] = [iniFile, "-s", section, "-t", "lua", "-o", outDir, "-n", outFile];
-		return;
 		/**
-		 * 
-		 * Options:
+		Options:
 			-s SECTION   sets a specific section to be converted
 			-t TARGET    specifies the target vm. Will search for TARGET.yaml
 			-o OUTDIR    specifies the output directory for generated C++ code
 			-n OUT_FILE  specifcies the name of the output file, defaults to the prefix in the .ini file
-		 * 
-		 * "args": [
-				"e:/proj/a/cocos2dx_multitexture.ini",
-				"-s",
-				"cocos2dx_multitexture",
-				"-t",
-				"lua",
-				"-o",
-				"e:/proj/tank5/client/frameworks/cocos2d-x/cocos/scripting/lua-bindings/auto",
-				"-n",
-				"lua_cocos2dx_multitexture_auto"
-			]
-		 * 
 		 */
 		execFile(exePath, args, (error, stdout, stderr) => {
 			if (error) {
