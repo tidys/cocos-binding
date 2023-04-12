@@ -5,7 +5,7 @@ class FileTools {
         this.context = context;
     }
     getGeneratorExecutable() {
-        const exePath = join(this.context!.extensionPath, "static", 'win', "generator.exe");
+        const exePath = join(this.context!.extensionPath, "static", "generator-bin.exe");
         return exePath;
     }
     private context: vscode.ExtensionContext | null = null;
