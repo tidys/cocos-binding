@@ -198,13 +198,38 @@ function runBinding(iniFile: string) {
 		const section = filename;
 		const outDir = getOutDirectory();
 		const outFile = `lua_${filename}_auto`;
-		const args: string[] = [iniFile, "-s", section, "-t", "lua", "-o", outDir, "-n", outFile];
+		const userConf = `${getIniPath()}/userconf.ini`;
+		if (!existsSync(userConf)) {
+			log.output(`无效的配置文件: ${userConf}`);
+			return;
+		}
+		const args: string[] = [iniFile, "-s", section, "-t", "lua", "-o", outDir, "-n", outFile, "-i", userConf];
 		/**
 		Options:
 			-s SECTION   sets a specific section to be converted
 			-t TARGET    specifies the target vm. Will search for TARGET.yaml
 			-o OUTDIR    specifies the output directory for generated C++ code
 			-n OUT_FILE  specifcies the name of the output file, defaults to the prefix in the .ini file
+
+
+			[DEFAULT]
+			androidndkdir = F:\android-ndk-r10c
+			clangllvmdir = F:\android-ndk-r10c\toolchains\llvm-3.4\prebuilt\windows-x86_64
+			cocosdir = E:\proj\tank5\client\frameworks\cocos2d-x
+			frameworks = E:\proj\tank5\client\frameworks
+			cxxgeneratordir = E:\proj\tank5\client\frameworks\cocos2d-x\tools\bindings-generator
+			extra_flags = -D__WCHAR_MAX__=0x7fffffff -U__MINGW32__
+			clang_lib_version = lib
+			gnu_libstdc_version = 4.8
+			clang_version = 3.4
+
+			Traceback (most recent call last):
+				File "generator.py", line 1560, in <module>
+				File "generator.py", line 1478, in main
+				File "ConfigParser.py", line 618, in get
+				NoOptionError: No option 'cxxgeneratordir' in section: 'DEFAULT'
+
+
 		 */
 		execFile(exePath, args, (error, stdout, stderr) => {
 			if (error) {
