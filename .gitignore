@@ -3,4 +3,6 @@ dist
 node_modules
 .vscode-test/
 *.vsix
-static/bindings-generator/generator.spec
+static/build/
+static/generator-bin.exe
+*.spec

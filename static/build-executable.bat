@@ -19,20 +19,19 @@ if %errorlevel% NEQ 0 (
     echo Call succeeded.
 )
 
-echo y | call pyinstaller -F ./generator.py
+echo y | call pyinstaller -F ./generator.py -n generator-bin.exe --log-level  DEBUG --clean --distpath ./ --specpath ./build
 echo create executable succeeded!
 
-:copy
-@REM copy dependency
-set dist=G:\proj\cocos-binding\static\win
-rmdir /s /q %dist%
-mkdir %dist%
-copy "%CD%\dist\generator.exe" %dist%
-
-set copyDirs=libclang targets
-for %%i in (%copyDirs%) do (
-    set dir="%dist%\%%i"
-    mkdir !dir!
-    xcopy %CD%\%%i !dir! /E /H /C /Y
-)
+@REM :copy
+@REM @REM copy dependency
+@REM set dist=G:\proj\cocos-binding\static\win
+@REM rmdir /s /q %dist%
+@REM mkdir %dist%
+@REM copy "%CD%\dist\generator.exe" %dist%
+@REM set copyDirs=libclang targets
+@REM for %%i in (%copyDirs%) do (
+@REM     set dir="%dist%\%%i"
+@REM     mkdir !dir!
+@REM     xcopy %CD%\%%i !dir! /E /H /C /Y
+@REM )
 pause
