@@ -15,6 +15,15 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+        "type": "shell",
+        "label": "gen python exe",
+        "options": {
+            "cwd":"${workspaceFolder}/binding",
+        },
+        "command":"${workspaceFolder}/binding/build-executable.bat",
+        "problemMatcher":[]
     }
   ]
 }

@@ -1,8 +1,9 @@
+@REM 允许在批处理脚本中使用 ! 符号来延迟解析变量
 @setlocal enabledelayedexpansion
 @echo off
-@REM goto copy
+
 @REM clean cache file
-set dirs=dist build
+set dirs=build
 for %%i in (%dirs%) do (
     set dir="%CD%\%%i"
     if exist !dir! (
@@ -11,15 +12,29 @@ for %%i in (%dirs%) do (
 )
 
 @REM need create virtual python env, the env name is: python_2.7.13
-call conda activate python_2.7.13
+set pythonVersion=2.7.13
+set envName=python_%pythonVersion%
+call conda activate %envName%
 if %errorlevel% NEQ 0 (
     echo Call failed. Error code: %errorlevel%.
-    pause
-) else (
-    echo Call succeeded.
+    echo we will create conda environment
+    call conda create -n %envName% python=%pythonVersion%
+    call conda activate %envName%
 )
 
-echo y | call pyinstaller -F ./generator.py -n generator-bin.exe --log-level  DEBUG --clean --distpath ./ --specpath ./build
+@REM install dependencies
+call python --version 
+call pip install PyYAML==3.11
+if %errorlevel% neq 0 (exit)
+call pip install Cheetah==2.4.4
+if %errorlevel% neq 0 (exit)
+call pip install pyinstaller==3.6
+if %errorlevel% neq 0 (exit)
+call conda list
+
+@REM package executable
+echo y | call pyinstaller -F ./generator.py -n generator-bin.exe --log-level  DEBUG --clean --distpath ../static/win --specpath ./build
+if %errorlevel% neq 0 (exit)
 echo create executable succeeded!
 
 @REM :copy
