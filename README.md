@@ -18,3 +18,6 @@
 ## 生成lua-binding代码
 输入bind命令，需要从list里面选择一个ini，然后就会生成这个ini配置对应的lua-binding代码
 
+## 生成python的可执行文件
+
+vscode配置了task，运行`gen python exe`，会自动进行打包python的exe文件，环境使用到了conda，需要预先安装conda。

@@ -4,5 +4,5 @@ node_modules
 .vscode-test/
 *.vsix
 static/build/
-static/generator-bin.exe
 *.spec
+binding/build/generator-bin.exe/

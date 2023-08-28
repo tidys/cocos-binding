@@ -49,4 +49,3 @@ echo create executable succeeded!
 @REM     mkdir !dir!
 @REM     xcopy %CD%\%%i !dir! /E /H /C /Y
 @REM )
-pause
