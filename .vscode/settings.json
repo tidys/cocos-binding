@@ -8,5 +8,8 @@
   },
   // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
   "typescript.tsc.autoDetect": "off",
-  "typescript.format.semicolons": "insert"
+  "editor.formatOnSave": true,
+  "typescript.format.semicolons": "insert",
+  "python.pythonPath": "f:\\Program Files\\anaconda\\envs\\python_2.7.13\\python.exe",
+  "python.formatting.provider": "black"
 }

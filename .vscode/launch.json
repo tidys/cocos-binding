@@ -6,6 +6,15 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug generator.py",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/static/generator.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": ["cocos2dx.ini", "-o", "test"]
+    },
+    {
       "name": "Run Extension",
       "type": "extensionHost",
       "request": "launch",

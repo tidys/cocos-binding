@@ -17,13 +17,13 @@
       }
     },
     {
-        "type": "shell",
-        "label": "gen python exe",
-        "options": {
-            "cwd":"${workspaceFolder}/binding",
-        },
-        "command":"${workspaceFolder}/binding/build-executable.bat",
-        "problemMatcher":[]
+      "type": "shell",
+      "label": "gen python exe",
+      "options": {
+        "cwd": "${workspaceFolder}/static"
+      },
+      "command": "${workspaceFolder}/static/build-executable.bat",
+      "problemMatcher": []
     }
   ]
 }

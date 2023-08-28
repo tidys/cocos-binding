@@ -5,4 +5,4 @@ node_modules
 *.vsix
 static/build/
 *.spec
-binding/build/generator-bin.exe/
+static/generator-bin.exe_extracted/

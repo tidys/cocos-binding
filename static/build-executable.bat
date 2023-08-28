@@ -33,7 +33,7 @@ if %errorlevel% neq 0 (exit)
 call conda list
 
 @REM package executable
-echo y | call pyinstaller -F ./generator.py -n generator-bin.exe --log-level  DEBUG --clean --distpath ../static/win --specpath ./build
+echo y | call pyinstaller -F ./generator.py -n generator-bin.exe --log-level  DEBUG --clean --distpath ./ --specpath ./build
 if %errorlevel% neq 0 (exit)
 echo create executable succeeded!
 

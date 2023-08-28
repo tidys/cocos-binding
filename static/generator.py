@@ -1461,7 +1461,7 @@ def main():
     parser.add_option("-o", action="store", type="string", dest="outdir",
                         help="specifies the output directory for generated C++ code")
     parser.add_option("-n", action="store", type="string", dest="out_file",
-                        help="specifcies the name of the output file, defaults to the prefix in the .ini file")
+                        help="specifies the name of the output file, defaults to the prefix in the .ini file")
     parser.add_option("-i", action="store", type="string", dest="ini_cfg",
                         help="specify the path to the configuration file") 
 

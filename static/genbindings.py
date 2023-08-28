@@ -120,8 +120,7 @@ def main():
             x86_llvm_path, x64_llvm_path)
         sys.exit(1)
 
-    project_root = os.path.abspath(os.path.join(
-        os.path.dirname(__file__), '..', '..'))
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     cocos_root = os.path.abspath(os.path.join(project_root, ''))
     frameworks = os.path.abspath(os.path.join(project_root, '..'))
     cxx_generator_root = os.path.abspath(
