@@ -1,71 +1,20 @@
-# cocos-binding README
+# 为什么会有这个插件
 
-This is the README for your extension "cocos-binding". After writing up a brief description, we recommend including the following sections.
+需要频繁的配置python环境，对python 版本和lib的版本都有要求，每次都需要看文档配置，而且电脑还要配置环境变量，麻烦的一批
 
-## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+生成lua-binding的python逻辑稳定后，其实我们不需要关心python的具体逻辑，只要调用生成我们想要的lua——binding代码就行了，而python可以将脚本打包为exe，就刚好符合我们的需求，这样就不需要麻烦的传参了
 
-For example if there is an image subfolder under your extension project workspace:
 
-\!\[feature X\]\(images/feature-x.png\)
+## 使用前的配置准备
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+1. setIniPath:设置ini配置文件目录
 
-## Requirements
+2. setOutDir:设置输出目录
+3. setEnginePath: 当设置engine目录是，会自动推测配置，有效的engine目录为frameworks/cocos2d-x
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+该目录下需要有cocos、extensions、tools目录
 
-## Extension Settings
+## 生成lua-binding代码
+输入bind命令，需要从list里面选择一个ini，然后就会生成这个ini配置对应的lua-binding代码
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**

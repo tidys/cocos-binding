@@ -92,7 +92,7 @@ async function smartConfig(options: {
 	select: Function,
 	update: (path: string) => void;
 	title: string,
-}) {
+}):Promise<boolean> {
 	const chooseNew = "choose new directory...";
 	const items: vscode.QuickPickItem[] = [];
 	if (options.configDir) {
