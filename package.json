@@ -6,6 +6,11 @@
   "engines": {
     "vscode": "^1.77.0"
   },
+  "publisher": "xuyanfeng",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tidys/cocos-binding"
+  },
   "categories": [
     "Other"
   ],
