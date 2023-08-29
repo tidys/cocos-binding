@@ -21,8 +21,10 @@ if %errorlevel% NEQ 0 (
     call conda create -n %envName% python=%pythonVersion%
     call conda activate %envName%
 )
+set CONDA_FORCE_32BIT=1
 
 @REM install dependencies
+call conda info
 call python --version 
 call pip install PyYAML==3.11
 if %errorlevel% neq 0 (exit)
@@ -33,7 +35,7 @@ if %errorlevel% neq 0 (exit)
 call conda list
 
 @REM package executable
-echo y | call pyinstaller -F ./generator.py -n generator-bin.exe --log-level  DEBUG --clean --distpath ./ --specpath ./build
+echo y | call pyinstaller --hidden-import Cheetah.DummyTransaction --hidden-import PyYAML -F ./generator.py -n generator-bin.exe --log-level  DEBUG --clean --distpath ./ --specpath ./build
 if %errorlevel% neq 0 (exit)
 echo create executable succeeded!
 

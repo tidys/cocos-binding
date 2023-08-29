@@ -10,6 +10,7 @@ import pdb
 import ConfigParser
 import yaml
 import re
+import struct
 import os
 import inspect
 import traceback
@@ -1200,12 +1201,9 @@ class Generator(object):
         self.head_file = open(headfilepath, "w+")
         self.doc_file = open(docfilepath, "w+")
 
-        layout_h = Template(file=os.path.join(self.target, "templates", "layout_head.h"),
-                            searchList=[self])
-        layout_c = Template(file=os.path.join(self.target, "templates", "layout_head.c"),
-                            searchList=[self])
-        apidoc_ns_script = Template(file=os.path.join(self.target, "templates", "apidoc_ns.script"),
-                                searchList=[self])
+        layout_h = Template(file=os.path.join(self.target, "templates", "layout_head.h"), searchList=[self])
+        layout_c = Template(file=os.path.join(self.target, "templates", "layout_head.c"), searchList=[self])
+        apidoc_ns_script = Template(file=os.path.join(self.target, "templates", "apidoc_ns.script"), searchList=[self])
         self.head_file.write(str(layout_h))
         self.impl_file.write(str(layout_c))
         self.doc_file.write(str(apidoc_ns_script))
@@ -1451,6 +1449,11 @@ class Generator(object):
         else:
             return namespace_class_name
 def main():
+    # check python bit version
+    bit = 8 * struct.calcsize('P')
+    if bit != 32 :
+        print('need 32bit python version')
+        
     from optparse import OptionParser
 
     parser = OptionParser("usage: %prog [options] {configfile}")
@@ -1561,6 +1564,7 @@ def main():
                 }
             generator = Generator(gen_opts)
             generator.generate_code()
+    print('Generating lua bindings succeeds.')
 
 if __name__ == '__main__':
     try:

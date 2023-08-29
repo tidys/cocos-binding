@@ -1,0 +1,2 @@
+generator-bin.exe e:\proj\tank5\client\frameworks\cocos2d-x\tools\tolua\cocos2dx_gc.ini -s cocos2dx_gc -t lua -o e:\proj\tank5\client\frameworks\cocos2d-x\cocos\scripting\lua-bindings\auto -n lua_cocos2dx_gc_auto -i e:\proj\tank5\client\frameworks\cocos2d-x\tools\tolua/userconf.ini
+pause
