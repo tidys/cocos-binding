@@ -399,8 +399,8 @@ class NativeType(object):
         if use_typedef and self.canonical_type:
             name = self.canonical_type.namespaced_name
 
-        if self.is_pointer and name.endswith('*'):
-            name = name[:-1]
+        # if self.is_pointer and name.endswith('*'):
+        #     name = name[:-1]
             
         return "const " + name if (self.is_pointer and self.is_const) else name
 
