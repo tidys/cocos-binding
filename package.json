@@ -2,7 +2,8 @@
   "name": "cocos-binding",
   "displayName": "cocos-binding",
   "description": "",
-  "version": "0.0.1",
+  "icon": "icon.png",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.77.0"
   },
