@@ -24,6 +24,15 @@
       },
       "command": "${workspaceFolder}/static/build-executable.bat",
       "problemMatcher": []
+    },
+    {
+      "type": "shell",
+      "label": "build",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "command": "${workspaceFolder}/build.bat",
+      "problemMatcher": []
     }
   ]
 }

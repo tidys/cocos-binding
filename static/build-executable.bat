@@ -37,6 +37,15 @@ call conda list
 @REM package executable
 echo y | call pyinstaller --hidden-import Cheetah.DummyTransaction --hidden-import PyYAML -F ./generator.py -n generator-bin.exe --log-level  DEBUG --clean --distpath ./ --specpath ./build
 if %errorlevel% neq 0 (exit)
+
+@REM clean template files
+
+set dir1=%cd%\build
+if exist %dir1% (rmdir /s /q %dir1%)
+
+set dir2=%cd%\generator-bin.exe_extracted
+if exist %dir2% (rmdir /s /q %dir2%)
+
 echo create executable succeeded!
 
 @REM :copy
