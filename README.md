@@ -9,14 +9,14 @@
 ## 使用前的配置准备
 
 1. setIniPath:设置ini配置文件目录
-
 2. setOutDir:设置输出目录
-3. setEnginePath: 当设置engine目录是，会自动推测配置，有效的engine目录为frameworks/cocos2d-x
-
-该目录下需要有cocos、extensions、tools目录
+3. setEnginePath: 当设置engine目录是，会自动推测配置，有效的engine目录为frameworks/cocos2d-x，该目录下需要有cocos、extensions、tools目录
 
 ## 生成lua-binding代码
 输入bind命令，需要从list里面选择一个ini，然后就会生成这个ini配置对应的lua-binding代码
+
+## 快速打开ini配置
+输入openIni命令，会从list里面选择一个ini，快速打开这个ini配置
 
 ## 生成python的可执行文件
 

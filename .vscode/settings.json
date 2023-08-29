@@ -11,5 +11,6 @@
   "editor.formatOnSave": true,
   "typescript.format.semicolons": "insert",
   "python.pythonPath": "f:\\Program Files\\anaconda\\envs\\python_2.7.13\\python.exe",
-  "python.formatting.provider": "black"
+  "python.formatting.provider": "black",
+  "editor.tabSize": 2
 }
