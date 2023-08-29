@@ -6,13 +6,46 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug generator.py",
+      "name": "binding maputil",
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/static/generator.py",
       "console": "integratedTerminal",
-      "justMyCode": true,
-      "args": ["cocos2dx.ini", "-o", "test"]
+      "justMyCode": false,
+      "args": [
+        "e:/proj/tank5/client/frameworks/cocos2d-x/tools/tolua/cocos2dx_maputil.ini",
+        "-s",
+        "cocos2dx_maputil",
+        "-t",
+        "lua",
+        "-o",
+        "e:/proj/tank5/client/frameworks/cocos2d-x/cocos/scripting/lua-bindings/auto",
+        "-n",
+        "lua_cocos2dx_maputil_auto",
+        "-i",
+        "e:/proj/tank5/client/frameworks/cocos2d-x/tools/tolua/userconf.ini"
+      ]
+    },
+    {
+      "name": "binding gc",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/static/generator.py",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "args": [
+        "E:/proj/tank5/client/frameworks/cocos2d-x/tools/tolua/cocos2dx_gc.ini",
+        "-s",
+        "cocos2dx_gc",
+        "-t",
+        "lua",
+        "-o",
+        "E:/proj/tank5/client/frameworks/cocos2d-x/cocos/scripting/lua-bindings/auto",
+        "-n",
+        "lua_cocos2dx_gc_auto",
+        "-i",
+        "E:/proj/tank5/client/frameworks/cocos2d-x/tools/tolua/userconf.ini"
+      ]
     },
     {
       "name": "Run Extension",
