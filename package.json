@@ -29,6 +29,11 @@
           "type": "string",
           "default": "",
           "description": "输出文件夹"
+        },
+        "cocos-binding.latest_use_ini": {
+          "type": "string",
+          "default": "",
+          "description": "上次使用的lua binding ini配置文件"
         }
       }
     },
@@ -36,6 +41,10 @@
       {
         "command": "cocos-binding.bind",
         "title": "bind"
+      },
+      {
+        "command": "cocos-binding.openIni",
+        "title": "openIni"
       },
       {
         "command": "cocos-binding.setIniPath",

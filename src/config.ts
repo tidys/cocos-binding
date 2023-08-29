@@ -3,6 +3,18 @@ const id = 'cocos-binding';
 const KEY_INI = "ini_path";
 const KEY_ENGINE = "engine_path";
 const KEY_OUT_DIRECTORY = "out_directory";
+const KEY_LATEST_USE_INI = 'latest_use_ini';
+export function getLatestUseIni() {
+    const config = vscode.workspace.getConfiguration(id);
+    if (config.has(KEY_INI)) {
+        return config.get<string>(KEY_LATEST_USE_INI) || "";
+    }
+    return null;
+}
+export async function setLatestUseIni(file: string) {
+    const config = vscode.workspace.getConfiguration(id);
+    return await config.update(KEY_LATEST_USE_INI, file);
+}
 export function getIniPath() {
     const config = vscode.workspace.getConfiguration(id);
     if (config.has(KEY_INI)) {
