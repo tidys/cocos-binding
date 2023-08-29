@@ -4,6 +4,18 @@ const KEY_INI = "ini_path";
 const KEY_ENGINE = "engine_path";
 const KEY_OUT_DIRECTORY = "out_directory";
 const KEY_LATEST_USE_INI = 'latest_use_ini';
+const KEY_NDK = "ndk";
+export function getNDK() {
+  const config = vscode.workspace.getConfiguration(id);
+  if (config.has(KEY_INI)) {
+    return config.get<string>(KEY_NDK) || "";
+  }
+  return null;
+}
+export async function setNDK(file: string) {
+  const config = vscode.workspace.getConfiguration(id);
+  return await config.update(KEY_NDK, file);
+}
 export function getLatestUseIni() {
   const config = vscode.workspace.getConfiguration(id);
   if (config.has(KEY_INI)) {

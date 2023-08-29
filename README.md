@@ -8,16 +8,20 @@
 
 ## 使用前的配置准备
 
-1. setIniPath:设置ini配置文件目录
-2. setOutDir:设置输出目录
-3. setEnginePath: 当设置engine目录是，会自动推测配置，有效的engine目录为frameworks/cocos2d-x，该目录下需要有cocos、extensions、tools目录
+config命令会自动带你完善需要的配置，依次会引导进行以下配置
+- 设置engine目录，有效的engine目录为frameworks/cocos2d-x，该目录下需要有cocos、extensions、tools目录
+- 设置ini所在的目录
+- 设置c++ binding代码输出目录
+- 设置Android NDK目录
+- 自动生成`userconf.ini`配置
 
+如果一切顺利，就会提示`配置成功`，如果出现异常，可以再次执行config命令进行完整的配置
 ## 生成lua-binding代码
-输入bind命令，需要从list里面选择一个ini，然后就会生成这个ini配置对应的lua-binding代码
+输入`bind`命令，需要从list里面选择一个ini，然后就会生成这个ini配置对应的lua-binding代码
 
 ## 快速打开ini配置
-输入openIni命令，会从list里面选择一个ini，快速打开这个ini配置
+输入`openIni`命令，会从list里面选择一个ini，快速打开这个ini配置
 
 ## 生成python的可执行文件
 
-vscode配置了task，运行`gen python exe`，会自动进行打包python的exe文件，环境使用到了conda，需要预先安装conda。
+vscode配置了task，运行`gen python exe`，会自动将`generator.py`打包为`generator-bin.exe`文件，环境使用到了conda，需要预先安装conda。

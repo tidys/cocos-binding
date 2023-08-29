@@ -3,8 +3,9 @@ import { ChildProcess, execFile, spawn } from "child_process";
 import { join, relative, normalize, basename, extname } from "path";
 import { log } from "./log";
 import { existsSync } from "fs";
-import { getEnginePath, getIniPath, getLatestUseIni, setLatestUseIni, getOutDirectory, setEnginePath, setIniPath, setOutDirectory } from "./config";
+import { getEnginePath, getIniPath, getLatestUseIni, setLatestUseIni, getOutDirectory, setEnginePath, setIniPath, setOutDirectory, setNDK, getNDK } from "./config";
 import { fileTools } from './filetools';
+import { genBinding, userConfigFile } from './genbinding';
 interface CommandData {
   command: string,
   callback: (...args: any[]) => any,
@@ -15,11 +16,6 @@ export function activate(context: vscode.ExtensionContext) {
 
   const commands: CommandData[] = [
     {
-      command: "cocos-binding.setIniPath", callback: () => {
-        userSetIniPath();
-      }
-    },
-    {
       "command": "cocos-binding.openIni", callback: async () => {
         const ini = await chooseIni();
         if (ini && existsSync(ini)) {
@@ -28,11 +24,6 @@ export function activate(context: vscode.ExtensionContext) {
           });
         }
       }
-    },
-    {
-      command: 'lua-bind.setOutDir', callback: async (...args) => {
-        userSetOutDir();
-      },
     },
     {
       command: 'cocos-binding.bind', callback: async () => {
@@ -47,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
       }
     },
     {
-      command: "cocos-binding.setEnginePath", callback: async () => {
+      command: "cocos-binding.config", callback: async () => {
         // engine 目录
         let ret = await smartConfig({
           configDir: getEnginePath(),
@@ -88,6 +79,35 @@ export function activate(context: vscode.ExtensionContext) {
           title: "选择输出目录:"
         });
         if (!ret) { return; }
+        // ndk 
+        if (!getNDK()) {
+          const items: vscode.QuickPickItem[] = [];
+          const selectLocalNDK = 'select local ndk';
+          const getDownloadNDK = 'get download ndk';
+          items.push({ label: selectLocalNDK });
+          items.push({ label: getDownloadNDK });
+          const ret = await vscode.window.showQuickPick(items, { title: "NDK" });
+          if (ret?.label === selectLocalNDK) {
+            await userSetNDKPath();
+          } else {
+            const selectNDK = await vscode.window.showQuickPick([
+              { label: "R14B", description: 'https://dl.google.com/android/repository/android-ndk-r14b-darwin-x86_64.zip', picked: true }
+            ] as vscode.QuickPickItem[], { title: "选择NDK" });
+            if (selectNDK && selectNDK.description) {
+              vscode.env.clipboard.writeText(selectNDK.description);
+              log.output(selectNDK.description);
+              vscode.window.showInformationMessage(`下载地址已经复制到剪切板，请下载文件解压缩后，重新配置插件\n${selectNDK.description}`);
+              return;
+            }
+          }
+        }
+
+        // 生成userconf.ini
+        if (!ensureUserConfigIni()) {
+          vscode.window.showWarningMessage(`生成${userConfigFile}失败`);
+          return;
+        }
+        vscode.window.showInformationMessage("配置成功!");
       }
     }
   ];
@@ -175,6 +195,37 @@ async function userSetIniPath() {
     return dir;
   }
   return null;
+}
+async function userSetNDKPath() {
+  const uris = await vscode.window.showOpenDialog({
+    title: "select android ndk directory",
+    canSelectFiles: false,
+    canSelectFolders: true,
+    canSelectMany: false,
+  });
+  if (uris && uris[0]) {
+    const dir = uris[0].fsPath;
+    await setNDK(dir);
+    log.output(`set ndk directory: ${dir}`);
+    return dir;
+  }
+  return null;
+}
+
+function ensureUserConfigIni(): boolean {
+  const iniDir = getIniPath();
+  if (!iniDir) {
+    return false;
+  }
+  if (!existsSync(iniDir)) {
+    vscode.window.showWarningMessage(`invalid ini path:${iniDir}`);
+    return false;
+  }
+  const userConfig = join(iniDir, userConfigFile);
+  if (!existsSync(userConfig)) {
+    return genBinding();
+  }
+  return true;
 }
 async function chooseIni() {
   const iniPath = getIniPath();
