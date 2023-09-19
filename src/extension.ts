@@ -287,6 +287,7 @@ function runBinding(iniFile: string) {
       log.output(`无效的配置文件: ${userConf}`);
       return;
     }
+    log.focusAndClear();
     // TODO: 需要考虑下自定义的userconf.ini怎么处理，这里面放了比较多的关联配置
     const args: string[] = [iniFile, "-s", section, "-t", "lua", "-o", outDir, "-n", outFile, "-i", userConf];
     /**
