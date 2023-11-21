@@ -1496,6 +1496,8 @@ def main():
 
     sections = []
     if opts.section:
+        print("config sections:" + config.sections())
+        print("current section: " + opts.section)
         if (opts.section in config.sections()):
             sections = []
             sections.append(opts.section)

@@ -11,6 +11,7 @@ class Log {
   }
   output(str: string = "") {
     this.channel?.appendLine(str);
+    this.channel?.show();
     return str;
   }
   private context: vscode.ExtensionContext | null = null;

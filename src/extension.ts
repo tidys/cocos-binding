@@ -1,14 +1,26 @@
-import * as vscode from 'vscode';
+import * as JsIni from "js-ini";
+import * as vscode from "vscode";
 import { ChildProcess, execFile, spawn } from "child_process";
 import { join, relative, normalize, basename, extname } from "path";
 import { log } from "./log";
-import { existsSync } from "fs";
-import { getEnginePath, getIniPath, getLatestUseIni, setLatestUseIni, getOutDirectory, setEnginePath, setIniPath, setOutDirectory, setNDK, getNDK } from "./config";
-import { fileTools } from './filetools';
-import { genBinding, userConfigFile } from './genbinding';
+import { existsSync, readFileSync } from "fs";
+import {
+  getEnginePath,
+  getIniPath,
+  getLatestUseIni,
+  setLatestUseIni,
+  getOutDirectory,
+  setEnginePath,
+  setIniPath,
+  setOutDirectory,
+  setNDK,
+  getNDK,
+} from "./config";
+import { fileTools } from "./filetools";
+import { genBinding, userConfigFile } from "./genbinding";
 interface CommandData {
-  command: string,
-  callback: (...args: any[]) => any,
+  command: string;
+  callback: (...args: any[]) => any;
 }
 export function activate(context: vscode.ExtensionContext) {
   log.init(context);
@@ -16,17 +28,19 @@ export function activate(context: vscode.ExtensionContext) {
 
   const commands: CommandData[] = [
     {
-      "command": "cocos-binding.openIni", callback: async () => {
+      command: "cocos-binding.openIni",
+      callback: async () => {
         const ini = await chooseIni();
         if (ini && existsSync(ini)) {
-          vscode.workspace.openTextDocument(ini).then(doc => {
+          vscode.workspace.openTextDocument(ini).then((doc) => {
             vscode.window.showTextDocument(doc);
           });
         }
-      }
+      },
     },
     {
-      command: 'cocos-binding.bind', callback: async () => {
+      command: "cocos-binding.bind",
+      callback: async () => {
         const iniPath = getIniPath();
         if (!iniPath) {
           await userSetIniPath();
@@ -35,10 +49,11 @@ export function activate(context: vscode.ExtensionContext) {
         if (iniFile) {
           runBinding(iniFile);
         }
-      }
+      },
     },
     {
-      command: "cocos-binding.config", callback: async () => {
+      command: "cocos-binding.config",
+      callback: async () => {
         // engine 目录
         let ret = await smartConfig({
           configDir: getEnginePath(),
@@ -48,9 +63,11 @@ export function activate(context: vscode.ExtensionContext) {
           update: async (path: string) => {
             await setEnginePath(path);
           },
-          title: "选择engine目录:"
+          title: "选择engine目录:",
         });
-        if (!ret) { return; }
+        if (!ret) {
+          return;
+        }
         // 自动推测ini目录
         ret = await smartConfig({
           configDir: getIniPath(),
@@ -62,9 +79,11 @@ export function activate(context: vscode.ExtensionContext) {
           update: async (path: string) => {
             await setIniPath(path);
           },
-          title: "选择ini配置文件的目录:"
+          title: "选择ini配置文件的目录:",
         });
-        if (!ret) { return; }
+        if (!ret) {
+          return;
+        }
         // 自动推测out目录
         ret = await smartConfig({
           configDir: getOutDirectory(),
@@ -76,27 +95,41 @@ export function activate(context: vscode.ExtensionContext) {
           update: async (path: string) => {
             await setOutDirectory(path);
           },
-          title: "选择输出目录:"
+          title: "选择输出目录:",
         });
-        if (!ret) { return; }
-        // ndk 
+        if (!ret) {
+          return;
+        }
+        // ndk
         if (!getNDK()) {
           const items: vscode.QuickPickItem[] = [];
-          const selectLocalNDK = 'select local ndk';
-          const getDownloadNDK = 'get download ndk';
+          const selectLocalNDK = "select local ndk";
+          const getDownloadNDK = "get download ndk";
           items.push({ label: selectLocalNDK });
           items.push({ label: getDownloadNDK });
-          const ret = await vscode.window.showQuickPick(items, { title: "NDK" });
+          const ret = await vscode.window.showQuickPick(items, {
+            title: "NDK",
+          });
           if (ret?.label === selectLocalNDK) {
             await userSetNDKPath();
           } else {
-            const selectNDK = await vscode.window.showQuickPick([
-              { label: "R14B", description: 'https://dl.google.com/android/repository/android-ndk-r14b-darwin-x86_64.zip', picked: true }
-            ] as vscode.QuickPickItem[], { title: "选择NDK" });
+            const selectNDK = await vscode.window.showQuickPick(
+              [
+                {
+                  label: "R14B",
+                  description:
+                    "https://dl.google.com/android/repository/android-ndk-r14b-darwin-x86_64.zip",
+                  picked: true,
+                },
+              ] as vscode.QuickPickItem[],
+              { title: "选择NDK" }
+            );
             if (selectNDK && selectNDK.description) {
               vscode.env.clipboard.writeText(selectNDK.description);
               log.output(selectNDK.description);
-              vscode.window.showInformationMessage(`下载地址已经复制到剪切板，请下载文件解压缩后，重新配置插件\n${selectNDK.description}`);
+              vscode.window.showInformationMessage(
+                `下载地址已经复制到剪切板，请下载文件解压缩后，重新配置插件\n${selectNDK.description}`
+              );
               return;
             }
           }
@@ -108,25 +141,32 @@ export function activate(context: vscode.ExtensionContext) {
           return;
         }
         vscode.window.showInformationMessage("配置成功!");
-      }
-    }
+      },
+    },
   ];
 
-  commands.forEach(command => {
-    context.subscriptions.push(vscode.commands.registerCommand(command.command, command.callback));
+  commands.forEach((command) => {
+    context.subscriptions.push(
+      vscode.commands.registerCommand(command.command, command.callback)
+    );
   });
 }
 async function smartConfig(options: {
-  configDir: string | null,
-  guessBaseDir?: string | null, guessDir?: string,
-  select: Function,
+  configDir: string | null;
+  guessBaseDir?: string | null;
+  guessDir?: string;
+  select: Function;
   update: (path: string) => void;
-  title: string,
+  title: string;
 }): Promise<boolean> {
   const chooseNew = "choose new directory...";
   const items: vscode.QuickPickItem[] = [];
   if (options.configDir) {
-    items.push({ label: options.configDir, picked: true, description: "当前配置" });
+    items.push({
+      label: options.configDir,
+      picked: true,
+      description: "当前配置",
+    });
   }
   if (options.guessBaseDir && options.guessDir) {
     let guessDirResult = join(options.guessBaseDir, options.guessDir);
@@ -138,7 +178,9 @@ async function smartConfig(options: {
     await options.select();
   } else {
     items.push({ label: chooseNew, description: "重新选择一个目录" });
-    const selectItem = await vscode.window.showQuickPick(items, { title: options.title });
+    const selectItem = await vscode.window.showQuickPick(items, {
+      title: options.title,
+    });
     if (!selectItem) {
       return false;
     }
@@ -236,7 +278,7 @@ async function chooseIni() {
     );
     if (files.length) {
       let items: vscode.QuickPickItem[] = [];
-      files.forEach(file => {
+      files.forEach((file) => {
         const label = relative(normalize(iniPath), normalize(file.fsPath));
         items.push({ label: label });
       });
@@ -253,7 +295,7 @@ async function chooseIni() {
       // 将上次的ini排在最上边
       let latestUseIni: string | null = getLatestUseIni();
       if (latestUseIni) {
-        const idx = items.findIndex(el => el.label === latestUseIni);
+        const idx = items.findIndex((el) => el.label === latestUseIni);
         if (idx > -1) {
           const top = items.splice(idx, 1)[0];
           top.picked = true;
@@ -280,6 +322,17 @@ function runBinding(iniFile: string) {
     const extLen = extname(iniFile).length;
     const filename = basename(iniFile).slice(0, -extLen);
     const section = filename;
+    // 校验下这里的section是否和ini里面的一致
+    const iniFileData = readFileSync(iniFile, "utf-8");
+    const iniData = JsIni.parse(iniFileData, { comment: "#" });
+    if (iniData && !Object.keys(iniData).find((key) => key === filename)) {
+      log.output(
+        `section不一致：${filename} != ${Object.keys(iniData).join(
+          ""
+        )}\n请修改文件名或者init的section`
+      );
+      return;
+    }
     const outDir = getOutDirectory();
     const outFile = `lua_${filename}_auto`;
     const userConf = `${getIniPath()}/userconf.ini`;
@@ -289,7 +342,19 @@ function runBinding(iniFile: string) {
     }
     log.focusAndClear();
     // TODO: 需要考虑下自定义的userconf.ini怎么处理，这里面放了比较多的关联配置
-    const args: string[] = [iniFile, "-s", section, "-t", "lua", "-o", outDir, "-n", outFile, "-i", userConf];
+    const args: string[] = [
+      iniFile,
+      "-s",
+      section,
+      "-t",
+      "lua",
+      "-o",
+      outDir,
+      "-n",
+      outFile,
+      "-i",
+      userConf,
+    ];
     /**
     Options:
         -s SECTION   sets a specific section to be converted
@@ -309,17 +374,17 @@ function runBinding(iniFile: string) {
         gnu_libstdc_version = 4.8
         clang_version = 3.4
      */
-    console.log(`cmd: ${exePath} ${args.join(' ')}`);
+    console.log(log.output(`cmd: ${exePath} ${args.join(" ")}`));
     const process = spawn(exePath, args, { cwd: fileTools.getStaticPath() });
-    process.stdout.on('data', (data) => {
+    process.stdout.on("data", (data) => {
       console.log(log.output(data.toString()));
     });
-    process.stderr.on('data', (data) => {
+    process.stderr.on("data", (data) => {
       console.log(log.output(data.toString()));
     });
-    process.on('exit', (data) => {
+    process.on("exit", (data) => {
       console.log(log.output(`exit with: ${data?.toString()}`));
     });
   }
 }
-export function deactivate() { }
+export function deactivate() {}
