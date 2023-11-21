@@ -985,6 +985,7 @@ class Generator(object):
         self.index = cindex.Index.create()
         self.outdir = opts['outdir']
         self.search_path = opts['search_path']
+        self.runtime_classes_path = opts['runtime_classes_path']
         self.prefix = opts['prefix']
         self.headers = opts['headers'].split(' ')
         self.classes = opts['classes']
@@ -1496,7 +1497,7 @@ def main():
 
     sections = []
     if opts.section:
-        print("config sections:" + config.sections())
+        print("config sections:", config.sections())
         print("current section: " + opts.section)
         if (opts.section in config.sections()):
             sections = []
@@ -1546,6 +1547,7 @@ def main():
                 'target': os.path.join(workingdir, "targets", t),
                 'outdir': outdir,
                 'search_path': os.path.abspath(os.path.join(userconfig.get('DEFAULT', 'cocosdir'), 'cocos')),
+                'runtime_classes_path':os.path.abspath(os.path.join(userconfig.get('DEFAULT', 'frameworks'), 'runtime-src', 'Classes')),
                 'remove_prefix': config.get(s, 'remove_prefix'),
                 'target_ns': config.get(s, 'target_namespace'),
                 'cpp_ns': config.get(s, 'cpp_namespace').split(' ') if config.has_option(s, 'cpp_namespace') else None,

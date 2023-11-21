@@ -34,7 +34,7 @@
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": [
-        "e:/proj/tank5/client/frameworks/cocos2d-x/tools/tolua/cocos2dx_lua_asistant.ini",
+        "e:/proj/tank5/client/frameworks/cocos2d-x/tools/tolua/cocos2dx_lua_assistant.ini",
         "-s",
         "cocos2dx_lua_assistant",
         "-t",
